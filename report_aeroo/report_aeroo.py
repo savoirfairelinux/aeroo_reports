@@ -3,9 +3,12 @@
 # © 2016 Savoir-faire Linux
 # License GPL-3.0 or later (http://www.gnu.org/licenses/gpl).
 
+import base64
 import logging
 import os
+
 import subprocess
+import time
 
 from aeroolib.plugins.opendocument import Template, OOSerializer
 from cStringIO import StringIO
@@ -13,6 +16,7 @@ from genshi.template.eval import StrictLookup
 from openerp import api, models, registry
 from openerp.report.report_sxw import report_sxw
 from openerp.tools.translate import _
+from openerp.tools.safe_eval import safe_eval
 from openerp.exceptions import ValidationError
 from tempfile import NamedTemporaryFile
 
@@ -53,11 +57,6 @@ class AerooReport(report_sxw):
             self, cr, uid, ids, data, report_xml, context):
         """ Return an aeroo report generated with aeroolib
         """
-        if len(ids) > 1:
-            raise ValidationError(
-                _('Aeroo Reports do not support generating reports in batch. '
-                  'You must select one record at a time.'))
-
         context = context.copy()
         if self.name == 'report.printscreen.list':
             context['model'] = data['model']
@@ -121,6 +120,11 @@ class AerooReport(report_sxw):
         else:
             context = dict(context)
 
+        if len(ids) > 1:
+            raise ValidationError(
+                _('Aeroo Reports do not support generating reports in batch. '
+                  'You must select one record at a time.'))
+
         env = api.Environment(cr, uid, context)
 
         if 'tz' not in context:
@@ -136,7 +140,39 @@ class AerooReport(report_sxw):
         report_type = report_xml.report_type
         assert report_type == 'aeroo'
 
+        if report_xml.attachment_use:
+            obj = env[report_xml.model].browse(ids[0])
+            output_format = report_xml.out_format.code[3:]
+
+            if report_xml.attachment:
+                filename = "%s.%s" % (
+                    safe_eval(report_xml.attachment, {
+                        'object': obj,
+                        'time': time,
+                    }), output_format)
+
+            else:
+                filename = "%s.%s" % (report_xml.name, output_format)
+
+            attachment = env['ir.attachment'].search([
+                ('res_id', '=', obj.id),
+                ('res_model', '=', obj._name),
+                ('datas_fname', '=', filename),
+            ], limit=1)
+
+            if attachment:
+                return base64.decodestring(attachment.datas), output_format
+
         res = self.create_aeroo_report(
             cr, uid, ids, data, report_xml, context=context)
+
+        if report_xml.attachment_use:
+            env['ir.attachment'].create({
+                'name': filename,
+                'datas': base64.encodestring(res[0]),
+                'datas_fname': filename,
+                'res_model': obj._name,
+                'res_id': obj.id,
+            })
 
         return res
