@@ -16,7 +16,7 @@ class TestAerooReport(common.SavepointCase):
         cls.partner = cls.env['res.partner'].create({
             'name': 'My Partner',
         })
-        cls.report = cls.env.ref('report_aeroo_sample.aeroo_sample_report_id')
+        cls.report = cls.env.ref('report_aeroo.aeroo_sample_report_id')
         cls.report.write({
             'attachment': None,
             'attachment_use': False,
