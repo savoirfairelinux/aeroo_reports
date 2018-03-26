@@ -29,7 +29,7 @@ class tr_TR(ctt_language):
         self.multi_sng_msc = [u'yüz', u' bin', u' milyon', u' milyar']
 
         # next line is needed for correct loading of currencies
-        import currencies
+        from . import currencies
         return currencies
 
     def wordify(self, chunk, chunknr, gender):

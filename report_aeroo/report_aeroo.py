@@ -16,7 +16,7 @@ from genshi.template.eval import StrictLookup
 
 from odoo import api, models
 from odoo.api import Environment
-from odoo.report.report_sxw import report_sxw
+# from odoo.report.report_sxw import report_sxw
 from odoo.tools.translate import _
 from odoo.tools.safe_eval import safe_eval
 from odoo.exceptions import ValidationError
@@ -54,7 +54,8 @@ class DynamicLookup(StrictLookup):
         return orig
 
 
-class AerooReport(report_sxw):
+# class AerooReport(report_sxw):
+class AerooReport():
 
     def generate_temporary_file(self, cr, uid, ids, data, format):
         temp_file = NamedTemporaryFile(

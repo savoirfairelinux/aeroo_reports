@@ -22,6 +22,7 @@ class AerooAddPrintButton(models.TransientModel):
             return None
 
         report = self.env[ctx['active_model']].browse(ctx['active_id'])
+        import ipdb; ipdb.set_trace()
         vals = self.env['ir.values'].search([
             ('value', '=', report.type + ',' + str(report.id))
         ])

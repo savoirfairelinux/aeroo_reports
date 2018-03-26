@@ -37,7 +37,7 @@ class es_ES(ctt_language):
         self.multi_plr_msc = [u'cientos', u' mil', u' millones', u' billones']
 
         # next line is needed for correct loading of currencies
-        import currencies
+        from . import currencies
         return currencies
 
     def wordify(self, chunk, chunknr, gender):

@@ -9,9 +9,9 @@ from odoo import api, fields, models, _, tools
 from odoo.exceptions import ValidationError
 
 
-class ReportXml(models.Model):
+class IrActionsReport(models.Model):
 
-    _inherit = 'ir.actions.report.xml'
+    _inherit = 'ir.actions.report'
 
     tml_source = fields.Selection(
         selection_add=[('dms', 'Import From DMS')])

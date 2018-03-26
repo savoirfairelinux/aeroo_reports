@@ -4,6 +4,6 @@
 
 from . import (
     report_mimetypes,
+    ir_actions_report,
     ir_actions_report_line,
-    ir_actions_report_xml,
 )

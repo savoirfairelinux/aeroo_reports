@@ -31,7 +31,7 @@
 ##############################################################################
 
 import logging
-from odoo.report.report_sxw import rml_parse
+# from odoo.report.report_sxw import rml_parse
 import lorem
 import random
 

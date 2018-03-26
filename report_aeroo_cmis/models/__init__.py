@@ -5,6 +5,6 @@
 from . import (
     aeroo_dms_backend,
     aeroo_dms_backend_repository,
+    ir_actions_report,
     ir_actions_report_line,
-    ir_actions_report_xml,
 )

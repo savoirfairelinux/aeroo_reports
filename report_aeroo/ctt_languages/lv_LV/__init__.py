@@ -37,7 +37,7 @@ class lv_LV(ctt_language):
                               u' miljardi']
 
         # next line is needed for correct loading of currencies
-        import currencies
+        from . import currencies
         return currencies
 
     def wordify(self, chunk, chunknr, gender):

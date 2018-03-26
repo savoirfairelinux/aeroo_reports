@@ -30,9 +30,9 @@
 #
 ##############################################################################
 
-from code128 import get_code
-from code39 import create_c39
-from EANBarCode import EanBarCode
+from .code128 import get_code
+from .code39 import create_c39
+from .EANBarCode import EanBarCode
 from io import StringIO
 
 

@@ -11,8 +11,8 @@ import sys
 
 from odoo import models, fields, api, tools, _
 from odoo.exceptions import ValidationError
-from odoo.report import interface
-from odoo.report.report_sxw import rml_parse
+# from odoo.report import interface
+# from odoo.report.report_sxw import rml_parse
 from openerp.tools.safe_eval import safe_eval
 from odoo.tools.config import config
 
@@ -21,7 +21,7 @@ from ..report_aeroo import AerooReport
 logger = logging.getLogger('report_aeroo')
 
 
-class ReportXml(models.Model):
+class IrActionsReport(models.Model):
 
     _inherit = 'ir.actions.report'
 
@@ -91,8 +91,8 @@ class ReportXml(models.Model):
     @api.model
     def register_report(self, name, model, tmpl_path, parser):
         name = 'report.%s' % name
-        if name in interface.report_int._reports:
-            del interface.report_int._reports[name]
+        # if name in interface.report_int._reports:
+            # del interface.report_int._reports[name]
         res = AerooReport(name, model, tmpl_path, parser=parser)
         return res
 

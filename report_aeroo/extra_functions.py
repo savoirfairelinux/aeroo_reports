@@ -6,12 +6,12 @@
 import base64
 import logging
 import odoo.osv as osv
-import StringIO
+import io
 import time
 from datetime import datetime
 from aeroolib.plugins.opendocument import _filter
-from barcode import barcode
-from ctt_objects import supported_language
+from .barcode import barcode
+from .ctt_objects import supported_language
 from PIL import Image
 
 from odoo import models
@@ -229,13 +229,13 @@ class ExtraFunctions(object):
         statement = domain2statement(domain)
         expr = "for o in objects:\n\tif%s:\n\t\tcount+=1" % statement
         localspace = {'objects': attr, 'count': 0}
-        exec expr in localspace
+        exec(expr in localspace)
         return localspace['count']
 
     def _count_blank(self, attr, field):
         expr = "for o in objects:\n\tif not o.%s:\n\t\tcount+=1" % field
         localspace = {'objects': attr, 'count': 0}
-        exec expr in localspace
+        exec(expr in localspace)
         return localspace['count']
 
     def _count(self, attr):
@@ -246,31 +246,31 @@ class ExtraFunctions(object):
         expr = "for o in objects:\n\tif%s:\n\t\tsumm+=float(o.%s)" % (
             statement, sum_field)
         localspace = {'objects': attr, 'summ': 0}
-        exec expr in localspace
+        exec(expr in localspace)
         return localspace['summ']
 
     def _sum(self, attr, sum_field):
         expr = "for o in objects:\n\tsumm+=float(o.%s)" % sum_field
         localspace = {'objects': attr, 'summ': 0}
-        exec expr in localspace
+        exec(expr in localspace)
         return localspace['summ']
 
     def _max(self, attr, field):
         expr = "for o in objects:\n\tvalue_list.append(o.%s)" % field
         localspace = {'objects': attr, 'value_list': []}
-        exec expr in localspace
+        exec(expr in localspace)
         return max(localspace['value_list'])
 
     def _min(self, attr, field):
         expr = "for o in objects:\n\tvalue_list.append(o.%s)" % field
         localspace = {'objects': attr, 'value_list': []}
-        exec expr in localspace
+        exec(expr in localspace)
         return min(localspace['value_list'])
 
     def _average(self, attr, field):
         expr = "for o in objects:\n\tvalue_list.append(o.%s)" % field
         localspace = {'objects': attr, 'value_list': []}
-        exec expr in localspace
+        exec(expr in localspace)
         return (
             sum(localspace['value_list'])) / float(
                 len(localspace['value_list']))
@@ -278,7 +278,7 @@ class ExtraFunctions(object):
     def _asarray(self, attr, field):
         expr = "for o in objects:\n\tvalue_list.append(o.%s)" % field
         localspace = {'objects': attr, 'value_list': []}
-        exec expr in localspace
+        exec(expr in localspace)
         return localspace['value_list']
 
     def _get_name(self, obj, context=None):
@@ -390,9 +390,9 @@ class ExtraFunctions(object):
             return result
         ##############################################
         if not field_value:
-            return StringIO.StringIO(), 'image/png'
+            return io.StringIO(), 'image/png'
         field_value = base64.decodestring(field_value)
-        tf = StringIO.StringIO(field_value)
+        tf = io.StringIO(field_value)
         tf.seek(0)
         im = Image.open(tf)
         format = im.format.lower()
