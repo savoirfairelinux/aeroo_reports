@@ -10,16 +10,23 @@ from odoo import api, fields, models
 class MailTemplate(models.Model):
 
     _inherit = 'mail.template'
+    _name = 'mail.template.aeroo'
 
     aeroo_report_ids = fields.Many2many(
-        'ir.actions.report',
-        'mail_template_aeroo_report_rel',
-        'mail_template_id',
-        'aeroo_report_id',
+        comodel_name='ir.actions.report',
+        relation='mail_template_aeroo_report_relation',
+        column1='mail_template_id',
+        column2='aeroo_report_id',
         string='Aeroo Reports',
         domain="[('model', '=', model), ('report_type', '=', 'aeroo'), ('multi', '=', False)]")
 
-    @api.multi
+    attachment_ids = fields.Many2many(comodel_name='ir.attachment', 
+                                      relation='email_template_attachment_rel2',
+                                      column1='email_template_id',
+                                      column2='attachment_id', 
+                                      string='Attachments',
+                                      help="You may attach files to this template, to be added to all "
+                                           "emails created from this template")
     def generate_email(self, res_ids, fields=None):
         """Add aeroo reports to the generated emails."""
         results = super().generate_email(res_ids, fields=fields)
