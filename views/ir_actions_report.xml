@@ -1,5 +1,4 @@
 <odoo>
-
     <record id="act_report_xml_view1" model="ir.ui.view">
         <field name="name">ir.actions.report.aeroo.form</field>
         <field name="model">ir.actions.report</field>
@@ -135,12 +134,7 @@
         </field>
     </record>
 
-    <act_window name="Translations"
-        domain="[('type', '=', 'report'),('res_id', '=', active_id)]"
-        view_type="form"
-        res_model="ir.translation"
-        src_model="ir.actions.report"
-        id="act_translations"/>
+
 
     <record model="ir.actions.act_window.view" id="act_report_xml_tree_view">
         <field name="sequence" eval="1"/>
@@ -160,7 +154,7 @@
         <field name="name">Reports</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">ir.actions.report</field>
-        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
         <field name="view_mode">tree,form</field>
         <field name="domain">[('report_type', '=', 'aeroo')]</field>
         <field name="context">{'default_report_type': 'aeroo'}</field>
@@ -196,5 +190,4 @@
     <record id="base.menu_reporting_config" model="ir.ui.menu">
         <field name="groups_id" eval="[(4, ref('group_aeroo_manager'))]"/>
     </record>
-
-</odoo>
+    </odoo>
