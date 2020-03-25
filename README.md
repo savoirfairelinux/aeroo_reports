@@ -1,6 +1,6 @@
 # Aeroo Reports
 
-Aeroo Reports for Odoo v10.0
+Aeroo Reports for Odoo v13.0
 
 ## Installation
 
